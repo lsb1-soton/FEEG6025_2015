@@ -159,14 +159,14 @@ names(cleanClassSurvey)
 
 # just for fun - t test
 
-## Age ----
+## Lab Q 5 Age ----
 # plot the age distribution for each enjoyment level
 
 # anything strange about this one?
 
-# Lab Q3 calculating a 95% CI for duration ----
+## Lab Q6 calculating a 95% CI for duration ----
 
-## Calculating 95% CI for % Civil Engineers ----
+## Lab Q7 Calculating 95% CI for % Civil Engineers ----
 
 
 ## Testing a correlelogram (if time - not a good example) ----
