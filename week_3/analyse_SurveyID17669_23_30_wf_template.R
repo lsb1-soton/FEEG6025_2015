@@ -136,3 +136,44 @@ names(cleanClassSurvey)
 
 ### Analyse cleanClassSurvey ------------------------
 
+## Lab Q1 Enjoyment ----
+# how many enjoyed their previous degree?
+
+# compare enjoyment vs did they finish the survey?
+
+# turn that into a bar chart
+
+## Lab Q2 Stats knowledge ----
+# who knows stats by course type?
+
+# try a mosaic plot
+
+## Lab Q3 Duration ----
+
+# mean duration - what would happen if we didn't tell R what to do about the NAs?
+
+
+# Lab Q4 did the respondents who gave feedback spend longer on the survey? ----
+
+# what would have happened if we has not told R to ignore the NA?
+
+# just for fun - t test
+
+## Age ----
+# plot the age distribution for each enjoyment level
+
+# anything strange about this one?
+
+# Lab Q3 calculating a 95% CI for duration ----
+
+## Calculating 95% CI for % Civil Engineers ----
+
+
+## Testing a correlelogram (if time - not a good example) ----
+#install.packages("corrgram") # if needed
+library(corrgram)
+
+# convert factors to numerics to fool corrgram
+
+
+
