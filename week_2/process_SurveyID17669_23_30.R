@@ -24,11 +24,13 @@ hist(classSurveyDF$age, xlab = "Age", main = "Histogram of Age")
 
 # convert the previous course data to be non-disclosive
 classSurveyDF$previous_full <- classSurveyDF$What.was.your.first.degree...e.g..MEng.Civil.Engineering........
-# ideally we'd want to seperate civil from other forms of engineer but to be safe...
-classSurveyDF$previous_safe <- ifelse(grepl("ivil", 
-              classSurveyDF$previous_full),"Civil Engineer", "Not Civil Engineer")
+classSurveyDF$previous_safe <- "Other" # non-disclosive default
+classSurveyDF$previous_safe[grep("ngine",classSurveyDF$previous_full)] <- "Engineer"
+classSurveyDF$previous_safe[grep("ivil",classSurveyDF$previous_full)] <- "Civil Engineer"
 # set to NA if we don't know
 classSurveyDF$previous_safe[classSurveyDF$Date.Finished == "Did not finish"] <- NA
+
+table(classSurveyDF$previous_safe)
 
 # make safe
 classSurveyDF$previous_full <- NULL
