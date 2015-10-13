@@ -193,8 +193,8 @@ boxplot(cleanClassSurvey$age ~ cleanClassSurvey$enjoy, xlab = "Enjoyment of prev
 # anything strange about this one?
 
 
-## Calculating 95% CI for a proportion ----
-non_e <- length(cleanClassSurvey$previous_safe[cleanClassSurvey$previous_safe != "Not Civil Engineer" 
+## Calculating 95% CI for % Civil Engineers ----
+non_e <- length(cleanClassSurvey$previous_safe[cleanClassSurvey$previous_safe == "Civil Engineer" 
                                                & !is.na(cleanClassSurvey$previous_safe)]) # make sure ignore NA
 valid <-  length(cleanClassSurvey$previous_safe[!is.na(cleanClassSurvey$previous_safe)]) # count the valid cases
 
