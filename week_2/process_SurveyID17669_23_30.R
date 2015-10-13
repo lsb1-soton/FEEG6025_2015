@@ -39,4 +39,4 @@ classSurveyDF$What.was.your.first.degree...e.g..MEng.Civil.Engineering........ <
 safeClassSurveyDF <- classSurveyDF[,-grep("X.|Previous.ID|.Order|YOUR|WHAT|FUTURE", colnames(classSurveyDF))]
 
 # save it to week 3
-write.csv(safeClassSurveyDF, file = paste0("Data/", file, "_wf.csv"))
+write.csv(safeClassSurveyDF, file = paste0("Data/", file, "_initial_wf.csv"))

@@ -25,7 +25,7 @@ setwd(dpath)
 
 # input file name
 # this is the one we downloaded & slightly processed
-file <- "SurveyID17669_23_30_wf"
+file <- "SurveyID17669_23_30_initial_wf"
 
 ### Functions ----
 

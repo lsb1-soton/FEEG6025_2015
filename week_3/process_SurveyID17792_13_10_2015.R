@@ -48,4 +48,4 @@ classSurveyDF$X8 <- NULL
 classSurveyDF$X9 <- NULL
 
 # save it to data
-write.csv(classSurveyDF, file = paste0("Data/", file, "_wf.csv"))
+write.csv(classSurveyDF, file = paste0("Data/", file, "_thermal_wf.csv"))
