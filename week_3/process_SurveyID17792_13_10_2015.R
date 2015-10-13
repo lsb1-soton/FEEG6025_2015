@@ -15,29 +15,37 @@ file <- "SurveyID17792_13_10_2015"
 # it's in week 2
 classSurveyDF <- read.csv(paste0("Week 2/", file, ".csv"))
 
-
 # convert the country of origin data to be non-disclosive
-table(classSurveyDF$X8)
-table(classSurveyDF$X9)
-classSurveyDF$countryo_full <- classSurveyDF$X8 # origin
-classSurveyDF$countryr_full <- classSurveyDF$X9 # Where have you been living for the last 10 years
+table(classSurveyDF$X8) # origin
+table(classSurveyDF$X9)  # Where have you been living for the last 10 years
 
 # Only China & UK >= 5
 # car package -> recode
-classSurveyDF$countryo <- ifelse(grepl("China", 
-              classSurveyDF$X8),"China", "Not China"); 
-classSurveyDF$countryo <- ifelse(grepl("United Kingdom", 
-              classSurveyDF$X8),"United Kingdom", "Other")
-# set to NA if we don't know
-classSurveyDF$previous_safe[classSurveyDF$Date.Finished == "Did not finish"] <- NA
+classSurveyDF$countryo <- "Other"
+classSurveyDF$countryo[classSurveyDF$X8 == "China"] <- "China"
+classSurveyDF$countryo[classSurveyDF$X8 == "United Kingdom"] <- "United Kingdom"
+classSurveyDF$countryo[classSurveyDF$X8 == ""] <- NA
+classSurveyDF$countryo <- as.factor(classSurveyDF$countryo)
+# check
+table(classSurveyDF$countryo)
 
-if (classSurveyDF$X8[])
-  
+# Only China & UK >= 5
+# car package -> recode
+classSurveyDF$countryr <- "Other"
+classSurveyDF$countryr[classSurveyDF$X9 == "China"] <- "China"
+classSurveyDF$countryr[classSurveyDF$X9 == "United Kingdom"] <- "United Kingdom"
+classSurveyDF$countryr[classSurveyDF$X9 == ""] <- NA
+classSurveyDF$countryr <- as.factor(classSurveyDF$countryr)
+# check
+table(classSurveyDF$countryr)
+
+table(classSurveyDF$countryo, classSurveyDF$countryr) 
+# notice that there is one individual who came form China but has ben in UK for last 10 years
+# disclosive - we could identify that person if we knew something about the class.
+
 # make safe
-classSurveyDF$previous_full <- NULL
-classSurveyDF$What.was.your.first.degree...e.g..MEng.Civil.Engineering........ <- NULL
+classSurveyDF$X8 <- NULL
+classSurveyDF$X9 <- NULL
 
-safeClassSurveyDF <- classSurveyDF[,-grep("X.|Previous.ID|.Order|YOUR|WHAT|FUTURE", colnames(classSurveyDF))]
-
-# save it to week 3
-write.csv(safeClassSurveyDF, file = paste0("Data/", file, "_wf.csv"))
+# save it to data
+write.csv(classSurveyDF, file = paste0("Data/", file, "_wf.csv"))
