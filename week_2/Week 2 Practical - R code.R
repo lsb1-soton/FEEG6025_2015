@@ -1,6 +1,8 @@
+# code by Stephanie S.Gauthier@soton.ac.uk, @Stepha_Gauthier
+# use it to analyse the heart monitor data collected in the lab
 
 # Open your csv file
-HR <- read.csv("WRITE THE PATH OF YOUR FILE")
+HR <- read.csv("WRITE THE PATH OF YOUR FILE HERE!")
 
 ######################################
 # Review your file
@@ -18,7 +20,7 @@ max(HR$HRbpm)-min(HR$HRbpm) #range of the variable HRbpm
 mean(HR$HRbpm) #mean of the variable HRbpm
 median(HR$HRbpm) #median of the variable HRbpm
 as.numeric(names(table(round(HR$HRbpm,0)))[which.max(table(round(HR$HRbpm,0)))]) #mode of the variable HRbpm
-sd(HR$HRbpm) #standart deviation of the variable HRbpm (assuming that the variable HRbpm is a sample of the population)
+sd(HR$HRbpm) #standard deviation of the variable HRbpm (assuming that the variable HRbpm is a sample of the population)
 
 ######################################
 # Plot one of the variables of your file
