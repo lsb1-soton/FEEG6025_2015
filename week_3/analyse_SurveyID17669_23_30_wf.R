@@ -133,38 +133,80 @@ names(cleanClassSurvey)
 
 ### Analyse cleanClassSurvey ------------------------
 
-## Enjoyment ----
-# how many enjoyed their previous degree?
-plot(cleanClassSurvey$enjoy)
+## Lab Q1: How many enjoyed their previous degree? ----
+# Hint: use plot(x) and add labels to the x and y axes
+plot(cleanClassSurvey$enjoy, xlab = "Enjoyment of previous course", ylab = "N")
 
 # compare enjoyment vs did they finish the survey?
+# Hint: use table(x, y)
 table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe)
 
 # turn that into a bar chart
+# Hint: use table(x,y) and put the results into a variable
 counts <- table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe)
+
+# Hint: now make the barplot(x)
+# of course you could have put the table() function inside the barplot function :-)
 barplot(counts, main="Previous course enjoyment by course type",
-        xlab="Course type",
+        xlab = "Course type",
+        ylab = "N",
         legend = rownames(counts), beside=TRUE )
 
-## Stats knowledge ----
-# who knows stats by course type?
-counts <- table(cleanClassSurvey$stats, cleanClassSurvey$previous_safe)
-barplot(counts, main="Previous reported stats experience by course type",
-        xlab="Course type",
-        legend = rownames(counts), beside=TRUE )
-
-# try a mosaic plot
-mosaicplot(cleanClassSurvey$stats ~ cleanClassSurvey$previous_safe, 
+## Lab Q2:  Who knows stats by course type? ----
+# We could use a table() and then a barplot but let's try something else
+# Hint: use mosaicplot(x ~ y) with some fancy colours (you will need 5!) (why will you need 5?)
+mosaicplot(cleanClassSurvey$previous_safe ~ cleanClassSurvey$stats, 
            main = "Previous reported stats experience by course type",
-           xlab = "Stats experience",
-           ylab = "Previous course",
-           color = c("red", "blue"))
+           xlab = "Previous course",
+           ylab = "Stats experience",
+           color = c("tan1", "tan2", "sienna1", "brown1", "firebrick1"))
 
-## Duration ----
+## Lab Q3: Did the respondents who gave feedback spend longer on the survey? ----
 
-# mean duration - what would happen if we didn't tell R what to do about the NAs?
+# first check mean duration - what would happen if we didn't tell R what to do about the NAs?
+# Hint: use mean() and compare the results with summary()
+mean(cleanClassSurvey$duration_secs)
 mean(cleanClassSurvey$duration_secs, na.rm = TRUE)
 summary(cleanClassSurvey$duration_secs)
+
+# now for the comparison...
+# Hint: use tapply() to get the mean of duration by yes/no feedback and tell it what to do about NAs!
+tapply(cleanClassSurvey$duration_secs, cleanClassSurvey$feedback, na.rm = TRUE, mean)
+# what would have happened if we had not told R to ignore the NA?
+# what would you conclude from the result?
+
+# make a boxplot to compare duration by feedback/no feedback
+# Hint: use boxplot(x ~ y)
+boxplot(cleanClassSurvey$duration_secs ~ cleanClassSurvey$feedback)
+# what would you conclude from the boxplot?
+
+## Lab Q4: Do older students spend longer completing surveys? ----
+# Hint: use boxplot(x ~ y) to compare duration across age, 
+# You could also add a label to the x & y axes
+boxplot(cleanClassSurvey$duration_secs ~ cleanClassSurvey$age, 
+        xlab = "Age", ylab = "Duration of survey")
+# anything strange about this one?
+
+## Testing a correlelogram (if time - not a good example) ----
+#install.packages("corrgram") # if needed
+library(corrgram)
+
+# convert factors to numerics to fool corrgram
+cleanClassSurvey$enjoy.n <- as.numeric(cleanClassSurvey$enjoy)
+cleanClassSurvey$tv.n <- as.numeric(cleanClassSurvey$tv)
+cleanClassSurvey$cold.n <- as.numeric(cleanClassSurvey$cold)
+cleanClassSurvey$energy.n <- as.numeric(cleanClassSurvey$energy)
+
+# create corrgram
+cvars <- c("age", "duration_secs", "enjoy.n", "tv.n", "cold.n", "energy.n")
+corrgram(cleanClassSurvey[,cvars], order=TRUE, lower.panel=panel.pts,
+         upper.panel=panel.pie,
+         main="Correlations (sorted)") 
+
+# STOP HERE!
+print("XXXXXXXXXXX")
+print("You were supposed to stop before here!")
+## Confidence Intervals ----
 
 # calculating a 95% CI for duration
 m <- mean(cleanClassSurvey$duration_secs, na.rm = TRUE)
@@ -179,21 +221,7 @@ print(paste0("Duration (secs) lower 95% CI: ", duration_secsCIl))
 print(paste0("Duration (secs) mean: ", m))
 print(paste0("Duration (secs) upper 95% CI: ", duration_secsCIu))
 
-# did the respondents who gave feedback spend longer on the survey?
-tapply(cleanClassSurvey$duration_secs,cleanClassSurvey$feedback , na.rm = TRUE, mean)
-# what would have happened if we has not told R to ignore the NA?
-boxplot(cleanClassSurvey$duration_secs ~ cleanClassSurvey$feedback)
-
-# just for fun
-t.test(cleanClassSurvey$duration_secs ~ cleanClassSurvey$feedback)
-
-## Age ----
-# age distribution for each enjoyment level
-boxplot(cleanClassSurvey$age ~ cleanClassSurvey$enjoy, xlab = "Enjoyment of previous course", ylab = "Age")
-# anything strange about this one?
-
-
-## Calculating 95% CI for % Civil Engineers ----
+## Calculating 95% CI for % Civil Engineers
 non_e <- length(cleanClassSurvey$previous_safe[cleanClassSurvey$previous_safe == "Civil Engineer" 
                                                & !is.na(cleanClassSurvey$previous_safe)]) # make sure ignore NA
 valid <-  length(cleanClassSurvey$previous_safe[!is.na(cleanClassSurvey$previous_safe)]) # count the valid cases
@@ -209,19 +237,6 @@ print(paste0("non_eCIu lower 95% CI: ", non_eCIl))
 print(paste0("non_e proportion: ", p))
 print(paste0("non_eCIl lower 95% CI: ", non_eCIu))
 
-## Testing a correlelogram (if time - not a good example) ----
-#install.packages("corrgram") # if needed
-library(corrgram)
 
-# convert factors to numerics to fool corrgram
-cleanClassSurvey$enjoy.n <- as.numeric(cleanClassSurvey$enjoy)
-cleanClassSurvey$tv.n <- as.numeric(cleanClassSurvey$tv)
-cleanClassSurvey$cold.n <- as.numeric(cleanClassSurvey$cold)
-cleanClassSurvey$energy.n <- as.numeric(cleanClassSurvey$energy)
-
-cvars <- c("age", "duration_secs", "enjoy.n", "tv.n", "cold.n", "energy.n")
-corrgram(cleanClassSurvey[,cvars], order=TRUE, lower.panel=panel.pts,
-         upper.panel=panel.pie,
-         main="Correlations (sorted)") 
-
-
+# just for fun - use a t test to compare duration for yes/no feedback
+t.test(cleanClassSurvey$duration_secs ~ cleanClassSurvey$feedback)
