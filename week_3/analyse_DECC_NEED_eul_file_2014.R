@@ -63,29 +63,48 @@ summary(needEulf2014DF$Econs)
 # Q0.2: How many properties do not have 'valid' elec readings per year?
 # Hint: use table(x,y) and the EconsValid variable
 table(needEulf2014DF$EconsValid, needEulf2014DF$year)
-# What do the codes G, L, M, O & V mean?
+# What do the codes G, L, M & V mean?
 # Hint: RTFM :-) -> http://bit.ly/1LazmvE -> "Excel workbook explaining variable codes"
 
-# Q0.2a: How many properties do not have 'valid' gas readings per year? 
+# Q0.2a Draw a mosaicplot to visualise this
+# Hint: You will need 4 colours as there are 4 'valid' codes
+mosaicplot(year ~ EconsValid, 
+           data = needEulf2014DF,
+           main = "Valid codes by year (Electricity)",
+           xlab = "Year",
+           ylab = "N",
+           color = c("tan1", "tan2", "sienna1", "green1"))
+
+# Q0.3: How many properties do not have 'valid' gas readings per year? 
 # How many do not have gas at all?
 # Hint: use table(x,y) and the GconsValid variable
 table(needEulf2014DF$GconsValid, needEulf2014DF$year)
 
-## Q1: Descriptive Analysis over time
-# Q1.1: How does elec consumption vary over time? ----
+# Q0.3a Draw a mosaicplot to visualise this
+# no hint needed except you will need 5 colours this time to include O (off gas)
+mosaicplot(year ~ GconsValid, 
+           data = needEulf2014DF,
+           main = "Valid codes by year (Gas)",
+           xlab = "Year",
+           ylab = "N",
+           color = c("tan1", "tan2", "sienna1", "black", "green1"))
+
+
+## Q1: Descriptive Analysis over time ----
+# Q1.1: How does elec consumption vary over time?
 # Hint: use a boxplot(x ~y) and don't forget to add axis labels!
 boxplot(Econs ~ year,
         data = needEulf2014DF,
         xlab = "Year",
         ylab = "E consumption (kWh)")
 
-# Q1.2: How does gas consumption vary over time? ----
+# Q1.2: How does gas consumption vary over time?
 boxplot(Gcons ~ year,
         data = needEulf2014DF,
         xlab = "Year",
         ylab = "G consumption (kWh)")
 
-## Q2: Descriptive Analysis by UK region for 2012
+## Q2: Descriptive Analysis by UK region for 2012 ----
 # Q2.1 is there any difference in domestic electricity consumption by UK region in 2012?
 # Hint: use a boxplot() but select year == 2012 by sub-setting first & don't forget to label axes
 cons2012 <- subset(needEulf2014DF, needEulf2014DF$year == 2012)
@@ -100,7 +119,7 @@ boxplot(Gcons ~ ba_region,
         xlab = "Region",
         ylab = "G consumption (kWh, 2012)")
 
-## Q3: Descriptive Analysis by energy efficiency band in 2012
+## Q3: Descriptive Analysis by energy efficiency band in 2012 ----
 # Q3.1 is there a difference in domestic electricity consumption by EE band in 2012?
 # Hint: have a quick look at the EE_BAND first
 table(cons2012$EE_BAND)
@@ -118,7 +137,7 @@ boxplot(Gcons ~ EE_BAND,
         xlab = "EE Band",
         ylab = "G consumption (kWh, 2012)")
 
-# Q4: Association between property age and wall structure using 2012 subset
+# Q4: Is there an association between property age and wall structure using 2012 subset? ----
 # Why use the 2012 subset? What would happen if we used all the data?
 mosaicplot(PROP_AGE ~ WALL_CONS, 
            data = cons2012,
@@ -126,3 +145,6 @@ mosaicplot(PROP_AGE ~ WALL_CONS,
            xlab = "Dwelling age",
            ylab = "Wall type",
            color = c("green", "red"))
+
+# Homework! Edit this file to save the graphs so you can use them in a report ----
+# Hint: refer to the playWithDistributions.R code :-)
