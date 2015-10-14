@@ -136,38 +136,43 @@ names(cleanClassSurvey)
 
 ### Analyse cleanClassSurvey ------------------------
 
-## Lab Q1 Enjoyment ----
-# how many enjoyed their previous degree?
+## Lab Q1: How many enjoyed their previous degree? ----
+# Hint: use plot(x) and add labels to the x and y axes
 
 # compare enjoyment vs did they finish the survey?
+# Hint: use table(x, y)
 
 # turn that into a bar chart
+# Hint: use table(x,y) and put the results into a variable
 
-## Lab Q2 Stats knowledge ----
-# who knows stats by course type?
+# Hint: now make the barplot(x)
+# of course you could have put the table() function inside the barplot function :-)
 
-# try a mosaic plot
+## Lab Q2:  Who knows stats by course type? ----
+# We could use a table() and then a barplot but let's try something else
+# Hint: use mosaicplot(x ~ y) with some fancy colours (you will need 5!) (why will you need 5?)
 
-## Lab Q3 Duration ----
+## Lab Q3: Did the respondents who gave feedback spend longer on the survey? ----
 
-# mean duration - what would happen if we didn't tell R what to do about the NAs?
+# first check mean duration - what would happen if we didn't tell R what to do about the NAs?
+# Hint: use mean() and compare the results with summary()
 
+# now for the comparison...
+# Hint: use tapply() to get the mean of duration by yes/no feedback and tell it what to do about NAs!
 
-# Lab Q4 did the respondents who gave feedback spend longer on the survey? ----
+# what would have happened if we had not told R to ignore the NA?
+# what would you conclude from the result?
 
-# what would have happened if we has not told R to ignore the NA?
+# make a boxplot to compare duration by feedback/no feedback
+# Hint: use boxplot(x ~ y)
 
-# just for fun - t test
+# what would you conclude from the boxplot?
 
-## Lab Q 5 Age ----
-# plot the age distribution for each enjoyment level
+## Lab Q4: Do older students spend longer completing surveys? ----
+# Hint: use boxplot(x ~ y) to compare duration across age, 
+# You could also add a label to the x & y axes
 
 # anything strange about this one?
-
-## Lab Q6 calculating a 95% CI for duration ----
-
-## Lab Q7 Calculating 95% CI for % Civil Engineers ----
-
 
 ## Testing a correlelogram (if time - not a good example) ----
 #install.packages("corrgram") # if needed
@@ -175,5 +180,43 @@ library(corrgram)
 
 # convert factors to numerics to fool corrgram
 
+# create corrgram
+
+# STOP HERE!
+print("XXXXXXXXXXX")
+print("You were supposed to stop before here!")
+
+## Confidence Intervals ----
+
+# calculating a 95% CI for duration
+m <- mean(cleanClassSurvey$duration_secs, na.rm = TRUE)
+s <- sd(cleanClassSurvey$duration_secs, na.rm = TRUE)
+n <- length(cleanClassSurvey$duration_secs[cleanClassSurvey$finished == "Finished"]) # what would happen if we didn't exclude the NAs?
+error <- qnorm(0.975)*(s/sqrt(n))
+
+duration_secsCIu <- m + error
+duration_secsCIl <- m - error
+
+print(paste0("Duration (secs) lower 95% CI: ", duration_secsCIl))
+print(paste0("Duration (secs) mean: ", m))
+print(paste0("Duration (secs) upper 95% CI: ", duration_secsCIu))
+
+## Calculating 95% CI for % Civil Engineers
+non_e <- length(cleanClassSurvey$previous_safe[cleanClassSurvey$previous_safe == "Civil Engineer" 
+                                               & !is.na(cleanClassSurvey$previous_safe)]) # make sure ignore NA
+valid <-  length(cleanClassSurvey$previous_safe[!is.na(cleanClassSurvey$previous_safe)]) # count the valid cases
+
+p <- non_e/valid
+
+error <- qnorm(0.975) * sqrt((p*(1-p))/valid)
+
+non_eCIu <- p + error
+non_eCIl <- p - error
+
+print(paste0("non_eCIu lower 95% CI: ", non_eCIl))
+print(paste0("non_e proportion: ", p))
+print(paste0("non_eCIl lower 95% CI: ", non_eCIu))
 
 
+# just for fun - use a t test to compare duration for yes/no feedback
+t.test(cleanClassSurvey$duration_secs ~ cleanClassSurvey$feedback)
