@@ -155,7 +155,8 @@ barplot(counts, main="Previous course enjoyment by course type",
 ## Lab Q2:  Who knows stats by course type? ----
 # We could use a table() and then a barplot but let's try something else
 # Hint: use mosaicplot(x ~ y) with some fancy colours (you will need 5!) (why will you need 5?)
-mosaicplot(cleanClassSurvey$previous_safe ~ cleanClassSurvey$stats, 
+mosaicplot(previous_safe ~ stats, 
+           data = "cleanClassSurvey",
            main = "Previous reported stats experience by course type",
            xlab = "Previous course",
            ylab = "Stats experience",
@@ -177,13 +178,16 @@ tapply(cleanClassSurvey$duration_secs, cleanClassSurvey$feedback, na.rm = TRUE, 
 
 # make a boxplot to compare duration by feedback/no feedback
 # Hint: use boxplot(x ~ y)
-boxplot(cleanClassSurvey$duration_secs ~ cleanClassSurvey$feedback)
+boxplot(duration_secs ~ feedback,
+        data = cleanClassSurvey,
+        ylab = "Duration (s)")
 # what would you conclude from the boxplot?
 
 ## Lab Q4: Do older students spend longer completing surveys? ----
 # Hint: use boxplot(x ~ y) to compare duration across age, 
 # You could also add a label to the x & y axes
-boxplot(cleanClassSurvey$duration_secs ~ cleanClassSurvey$age, 
+boxplot(duration_secs ~ age, 
+        data = cleanClassSurvey,
         xlab = "Age", ylab = "Duration of survey")
 # anything strange about this one?
 
