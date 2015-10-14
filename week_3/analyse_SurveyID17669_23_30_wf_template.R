@@ -220,3 +220,5 @@ print(paste0("non_eCIl lower 95% CI: ", non_eCIu))
 
 # just for fun - use a t test to compare duration for yes/no feedback
 t.test(cleanClassSurvey$duration_secs ~ cleanClassSurvey$feedback)
+
+
