@@ -1,6 +1,6 @@
 # Script to load & process simple survey dataset
 # Survey: https://www.isurvey.soton.ac.uk/admin/section_list.php?surveyID=17669
-# Survey: https://www.isurvey.soton.ac.uk/17669
+# Survey: https://www.isurvey.soton.ac.uk/17669 (initial student backgorund)
 
 # clear the workspace
 rm(list=ls())
