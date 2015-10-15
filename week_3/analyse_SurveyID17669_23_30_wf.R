@@ -1,7 +1,7 @@
 # Meta ----
 # Script to load & process simple survey dataset
 # Survey admin: https://www.isurvey.soton.ac.uk/admin/section_list.php?surveyID=17669
-# Survey: https://www.isurvey.soton.ac.uk/17669
+# Survey: https://www.isurvey.soton.ac.uk/17669 (initial background)
 
 # code by: b.anderson@soton.ak.uk (@dataknut) with help from lsb1@soton.ac.uk
 
