@@ -3,7 +3,7 @@
 # code by: b.anderson@soton.ak.uk (@dataknut)
 
 # Functions ----
-checkFolder <- function(name) {
+checkFolder <- function(name) { #checks if folder exists and if not, creates it
   if(dir.exists(plotsf)) {
     print(paste0(plotsf, " folder exists, no need to create"))
   } else {
@@ -13,7 +13,10 @@ checkFolder <- function(name) {
 }
 
 # Housekeeping ----
-# change working directory to where you want to save results
+# Working directory is:"
+getwd()
+
+# change this to where you want to save results
 setwd("~/OneDriveBusiness/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Week 3")
 
 # Set name of folder for storing plots (saves re-typing)
@@ -26,31 +29,35 @@ rm(list=ls())
 
 # create a useful separator
 sep <- "\n################\n"
-# Working directory is:"
+
+# Check working directory is:"
 getwd()
 
 # print the separator
 cat(sep)
-# Testing Normal"
-normTest <- rnorm(1000, mean = 150)
+
+# Testing Normal with a mean of 150 and standard deviation of 20 ----
+normTest <- rnorm(1000, mean = 150, sd = 40)
 summary(normTest)
 hist(normTest)
 dev.copy(png,"plots/normTestHist.png")
 dev.off()
 # use a qnormal plot to test for normality
 # R lets us add a theoretical line to the plot for comparison
-qqnorm(normTest, main = "Q-Q plot for normal distribution"); qqline(normTest, col = 2)
+qqnorm(normTest, main = "Q-Q plot for normal distribution")
+  qqline(normTest, col = 2)
 dev.copy(png,"plots/normTestQQ.png")
 dev.off()
 
-# create a +ve skewed version by force
+# Create a +ve skewed version by force ----
 normTestPSkew <- normTest[normTest > mean(normTest)] # values > than the mean
 summary(normTestPSkew)
 hist(normTestPSkew, main = "Example of positive skew")
 dev.copy(png,"plots/normTestPSkewHist.png")
 dev.off()
 # use a qnormal plot to test for normality
-qqnorm(normTestPSkew, main = "Q-Q plot for positive skew"); qqline(normTestPSkew, col = 2)
+qqnorm(normTestPSkew, main = "Q-Q plot for positive skew")
+  qqline(normTestPSkew, col = 2)
 dev.copy(png,"plots/normTestPSkewQQ.png")
 dev.off()
 # to test for skew need
@@ -60,20 +67,21 @@ dev.off()
 # library(e1071)
 # skewness(normTestPSkew)
 
-# create a -ve skewed version by force
+# Create a -ve skewed version by force ----
 normTestNSkew <- normTest[normTest < mean(normTest)] # values < than the mean
 summary(normTestNSkew)
 hist(normTestNSkew, main = "Example of negative skew")
 dev.copy(png,"plots/normTestNSkewHist.png")
 dev.off()
 # use a qnormal plot to test for normality
-qqnorm(normTestNSkew, main = "Q-Q plot for negative skew"); qqline(normTestNSkew, col = 2)
+qqnorm(normTestNSkew, main = "Q-Q plot for negative skew")
+  qqline(normTestNSkew, col = 2)
 dev.copy(png,"plots/normTestNSkewQQ.png")
 dev.off()
 # skewness(normTestNSkew)
 
 cat(sep)
-# Testing Poisson, lambda = average number of events per unit time
+# Testing Poisson, lambda = average number of events per unit time ----
 poisTest <- rpois(1000, lambda = 3)
 summary(poisTest)
 hist(poisTest)
@@ -85,7 +93,7 @@ dev.copy(png,"plots/poisTestHist.png")
 dev.off()
 
 cat(sep)
-# Testing Binomial"
+# Testing Binomial ----
 binomTest <- rbinom(1000, 20, 0.2)
 hist(binomTest)
 summary(binomTest)
@@ -93,7 +101,7 @@ dev.copy(png,"plots/binomTestHist.png")
 dev.off()
 
 cat(sep)
-# Testing Exponential"
+# Testing Exponential ----
 expTest <- rexp(1000, 1)
 hist(expTest)
 summary(expTest)
@@ -101,11 +109,13 @@ dev.copy(png,"plots/expTestHist.png")
 dev.off()
 
 cat(sep)
-# Testing standard normal - R defaults to mean = 0 & sd = 1 if you don't specifiy
+# Testing standard normal - R defaults to mean = 0 & sd = 1 if you don't specifiy ----
 stNormTest <- rnorm(1000)
 summary(stNormTest)
 hist(stNormTest)
+# add lower & upper 95% lines
 abline(v = c(-1.96,1.96), col="red")
+# add text labels
 text(-1.96,100, "-1.96", col="red")
 text(1.96,100, "1.96", col="red")
 text(-1.96, 150, pos = "4", "<----------", col = "red")
@@ -116,7 +126,7 @@ dev.copy(png,"plots/stNormTestHist.png")
 dev.off()
 
 cat(sep)
-# Calculating confidence intervals using the normal distribution
+# Calculating confidence intervals using the initial normal distribution ----
 m <- mean(normTest)
 s <- sd(normTest)
 n <- length(normTest)
@@ -125,7 +135,21 @@ error <- qnorm(0.975)*s/sqrt(n)
 normTestCIu <- m + error
 normTestCIl <- m - error
 
-print(paste0("normTest lower 95% CI: ", normTestCIl))
-print(paste0("normTest mean: ", m))
-print(paste0("normTest lower 95% CI: ", normTestCIu))
+hist(normTest)
+# add the mean
+abline(v = m, col="red")
+# add lower & upper 95% lines
+abline(v = c(normTestCIl,normTestCIu), col="green")
+
+# save it
+dev.copy(png,"plots/NormTestHistCI.png")
+dev.off()
+
+print(paste0("normTest lower 95% CI: ", round(normTestCIl, digits = 2)))
+print(paste0("normTest mean: ", round(m, digits = 2)))
+print(paste0("normTest lower 95% CI: ", round(normTestCIu, digits = 2)))
+
+# now go back to the top and change the value of 1000 to 10,000 in:
+# normTest <- rnorm(1000, mean = 150, sd = 40)
+# then re-run the whole script - what do you notice about the new 95% CIs?
 
