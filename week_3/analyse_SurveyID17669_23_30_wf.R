@@ -11,23 +11,27 @@
 rm(list=ls())
 
 # where is the default working directory?
+# use the results of this command to see how to do the next step
 getwd()
 
 # set location of data
+# dpath <- "where you put the data"
+# change the folder path below to one that matches your system and tells R where
+# you put the data
 dpath <- "~/OneDriveBusiness/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Data"
 
 # set location of results (if any)
+# rpath <- "where you want results too go (if there are any)"
 rpath <- "~/OneDriveBusiness/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Week 3"
 
-setwd(dpath)
-
 # input file name
-# this is the one we downloaded & slightly processed
+# this is the one you downloaded - make sure the name is correct (without the '.csv')!
 file <- "SurveyID17669_23_30_initial_wf"
 
 ### Functions ----
 
 ### Luke's finish time conversion ----
+# you can 'hide' this code by clicking on the arrow to the left (next to the line number) if you like
 convertiSurveyFinishTime <- function(iSurveyFinishTime) {
   # lapply applies function(x) to every list item; this deals with character(0) results etc.
   as.POSIXct(unlist(lapply(iSurveyFinishTime,
@@ -49,7 +53,11 @@ convertiSurveyFinishTime <- function(iSurveyFinishTime) {
                                NA
                              ))), tz = "", "%Y %b %e %I:%M %p")
 }
+
 ### Load & examine data  ------------------------
+
+# set working folder to 'dpath'
+setwd(dpath)
 
 # load the data into a data frame
 classSurveyDF <- read.csv(paste0(file, ".csv"))
@@ -73,7 +81,7 @@ table(classSurveyDF$Total.Time.Taken)
 # very badly!
 
 ### Clean and process  ------------------------
-
+# again, you can hide this code in RStudio by clicking on the arrow next to the line number on the left
 # these variable names are a bit of a pain
 # create a new data frame with cleaned up names
 cleanClassSurvey <- data.frame(classSurveyDF$Participant.ID)
@@ -133,34 +141,62 @@ names(cleanClassSurvey)
 
 ### Analyse cleanClassSurvey ------------------------
 
+# Try to work through these questions using what you learnt from swirl on Tuesday
+# Use the Help tab in Rstudio to look for functions you vaguely remember and also for options
+# or you can type `?something' at the > prompt and R will show you help files
+# or try googling 'r help something'
+# In the hints the 'x' (or 'y') is just an example - you need to supply the correct variable names!
+
 ## Lab Q1: How many enjoyed their previous degree? ----
-# Hint: use plot(x) and add labels to the x and y axes
+# Hint: use plot(x) and add labels to the x and y axes using xlab = "" and ylab = ""
+# R uses , to separate options...
 plot(cleanClassSurvey$enjoy, xlab = "Enjoyment of previous course", ylab = "N")
 
-# compare enjoyment vs did they finish the survey?
-# Hint: use table(x, y)
+# compare enjoyment vs which course done previously?
+# Hint: use table(x, y) and the 'previous_safe' variable which I have already recoded into 3 options
+# to prevent possible identification
 table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe)
 
 # turn that into a bar chart
 # Hint: use table(x,y) and put the results into a variable
 counts <- table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe)
 
-# Hint: now make the barplot(x)
-# of course you could have put the table() function inside the barplot function :-)
-barplot(counts, main="Previous course enjoyment by course type",
+# Hint: now make the barplot(x) and use the 'beside' option to put the bars next to each other
+# try adding a legend too
+barplot(counts, 
+        main="Previous course enjoyment by course type",
         xlab = "Course type",
         ylab = "N",
         legend = rownames(counts), beside=TRUE )
 
-## Lab Q2:  Who knows stats by course type? ----
+# of course you could have put the table() function inside the barplot function :-)
+# like this:
+barplot(table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe), 
+        main="Previous course enjoyment by course type",
+        xlab = "Course type",
+        ylab = "N",
+        legend = rownames(counts), beside=TRUE )
+
+## Lab Q2:  Who knows stats by previous course type? ----
 # We could use a table() and then a barplot but let's try something else
 # Hint: use mosaicplot(x ~ y) with some fancy colours (you will need 5!) (why will you need 5?)
-mosaicplot(previous_safe ~ stats, 
-           data = "cleanClassSurvey",
+# the following form may not work in old versions of R
+# mosaicplot(previous_safe ~ stats, 
+#           data = "cleanClassSurvey",
+#           main = "Previous reported stats experience by course type",
+#           xlab = "Previous course",
+#           ylab = "Stats experience",
+#           color = c("tan1", "tan2", "sienna1", "brown1", "firebrick1"))
+
+# try this instead:
+mosaicplot(cleanClassSurvey$previous_safe ~ cleanClassSurvey$stats, 
            main = "Previous reported stats experience by course type",
            xlab = "Previous course",
            ylab = "Stats experience",
            color = c("tan1", "tan2", "sienna1", "brown1", "firebrick1"))
+
+# to select colors you might want to use try:
+# demo(colors) - it will step through a large number of examples!
 
 ## Lab Q3: Did the respondents who gave feedback spend longer on the survey? ----
 
@@ -207,6 +243,14 @@ corrgram(cleanClassSurvey[,cvars], order=TRUE, lower.panel=panel.pts,
          upper.panel=panel.pie,
          main="Correlations (sorted)") 
 
+# there, isn't that pretty. What does it show?
+# it shows the correlation between a set of variables - the pie charts show the
+# sice of the correlaiton. The variables are listed on the diagonal. The scatterplots
+# are just scatter plots of the pairs of variables...
+
+# There is a quite strong correlation between the scores for 'cold' (put on more clothes when cold) and 'energy' (try to save it)
+
+
 # STOP HERE!
 print("XXXXXXXXXXX")
 print("You were supposed to stop before here!")
@@ -224,6 +268,15 @@ duration_secsCIl <- m - error
 print(paste0("Duration (secs) lower 95% CI: ", duration_secsCIl))
 print(paste0("Duration (secs) mean: ", m))
 print(paste0("Duration (secs) upper 95% CI: ", duration_secsCIu))
+
+# now redraw the old boxplot for duration
+boxplot(cleanClassSurvey$duration_secs, main = "Box plot of duration")
+abline(h = m, col = "red") # the mean
+#text(x, m , "Mean", col = "red") # I want to label the lines but what is the x value?
+abline(h=duration_secsCIu, col = "blue") # the upper 95% CI
+#text(x, m , "Upper 95%", col = "blue") # I want to label the lines but what is the x value?
+abline(h=duration_secsCIl, col = "green") # the lower 95% CI
+#text(x, m , "Lower 95%", col = "green") # I want to label the lines but what is the x value?
 
 ## Calculating 95% CI for % Civil Engineers
 non_e <- length(cleanClassSurvey$previous_safe[cleanClassSurvey$previous_safe == "Civil Engineer" 
