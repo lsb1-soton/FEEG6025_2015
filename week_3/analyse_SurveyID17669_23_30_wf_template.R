@@ -14,17 +14,15 @@ rm(list=ls())
 getwd()
 
 # set location of data
-# you will need to change this!
+# you will need to change this to whever you put the data (.csv fiule) you just downloaded
+# use the results of getwd() above to see the format to use for the PC you are using
 dpath <- "~/UoS One Drive/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Data"
 
-# set location of results (if any)
-# you will need to change this!
-rpath <- "~/UoS One Drive/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Week 3"
-
+# change the working directory/foilder so R can find the data easily
 setwd(dpath)
 
 # input file name
-# this is the one we downloaded & slightly processed
+# make sure this is the name of the data file (without the .csv suffix)
 file <- "SurveyID17669_23_30_initial_wf"
 
 ### Functions ----
@@ -54,11 +52,9 @@ convertiSurveyFinishTime <- function(iSurveyFinishTime) {
 
 ### Load & examine data  ------------------------
 
-# load the data into a data frame
+# load the data into a data frame using the 'file' variable you set above
+# note that we add the '.csv' part here for reasons that will become clear when we start using other data types
 classSurveyDF <- read.csv(paste0(file, ".csv"))
-
-# change the working directory once loaded in case we want to save out any results
-setwd(rpath)
 
 # variables?
 names(classSurveyDF)
@@ -75,7 +71,7 @@ table(classSurveyDF$Date.Finished)
 table(classSurveyDF$Total.Time.Taken)
 # very badly!
 
-### Clean and process  ------------------------
+### Clean and process the data ------------------------
 
 # these variable names are a bit of a pain
 # create a new data frame with cleaned up names
