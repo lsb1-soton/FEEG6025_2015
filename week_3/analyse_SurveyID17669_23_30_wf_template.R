@@ -15,11 +15,11 @@ getwd()
 
 # set location of data
 # you will need to change this!
-dpath <- "~/OneDriveBusiness/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Data"
+dpath <- "~/UoS One Drive/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Data"
 
 # set location of results (if any)
 # you will need to change this!
-rpath <- "~/OneDriveBusiness/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Week 3"
+rpath <- "~/UoS One Drive/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Week 3"
 
 setwd(dpath)
 
@@ -29,7 +29,7 @@ file <- "SurveyID17669_23_30_initial_wf"
 
 ### Functions ----
 
-### Luke's finish time conversion ----
+### Luke's finish time conversion
 convertiSurveyFinishTime <- function(iSurveyFinishTime) {
   # lapply applies function(x) to every list item; this deals with character(0) results etc.
   as.POSIXct(unlist(lapply(iSurveyFinishTime,
@@ -134,18 +134,31 @@ cleanClassSurvey$feedback <- as.factor(cleanClassSurvey$feedback)
 # check variable names
 names(cleanClassSurvey)
 
+# remove the 'old' dataset to avoid confusion
+classSurveyDF <- NULL
+
 ### Analyse cleanClassSurvey ------------------------
+# Once you have got the code to work to here you should find that R Studio has a new 'clean'
+# dataset called cleanClassSurvey
+
+# Work through the following questions using this dataset
+# For help in R type ?something at the > prompt and R will load the help page. e.g.
+# > ?plot will open the help page on plot()
+# you might find the pdfs in the "R Resources" folder on blackboard useful
+# you might also find http://www.statmethods.net/index.html useful
+# or try googling "R how to something"
 
 ## Lab Q1: How many enjoyed their previous degree? ----
-# Hint: use plot(x) and add labels to the x and y axes
+# Hint: use plot(x) with the cleanClassSurvey$previous_safe variable 
+# for extra points add labels to the x and y axes - go to help for plot() to see how
 
 # compare enjoyment vs did they finish the survey?
-# Hint: use table(x, y)
+# Hint: use table(x, y) with the 'previous' variable and the 'finished' variable
 
 # turn that into a bar chart
 # Hint: use table(x,y) and put the results into a variable
 
-# Hint: now make the barplot(x)
+# Hint: now make the barplot(x) using the variable you just created
 # of course you could have put the table() function inside the barplot function :-)
 
 ## Lab Q2:  Who knows stats by course type? ----
