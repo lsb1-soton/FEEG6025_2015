@@ -15,10 +15,10 @@ getwd()
 
 # set a variable with the data location
 # You will need to change this
-dpath <- "~/OneDriveBusiness/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Data"
+dpath <- "~/UoS One Drive/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Data"
 # set a variable for where we want the results to go
 # You will need to change this too!
-rpath <- "~/OneDriveBusiness/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Week 3"
+rpath <- "~/UoS One Drive/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Week 3"
 
 # input file name
 # long form of data (pre-processed)
