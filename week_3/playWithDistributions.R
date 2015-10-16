@@ -13,13 +13,13 @@ checkFolder <- function(name) { #checks if folder exists and if not, creates it
 }
 
 # Housekeeping ----
-# Working directory is:"
+# Working directory is:
 getwd()
 
-# change this to where you want to save results
-setwd("~/OneDriveBusiness/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Week 3")
+# change the working directory to where you want to save results (the plots)
+setwd("~/UoS One Drive/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Week 3")
 
-# Set name of folder for storing plots (saves re-typing)
+# Set name of folder for storing plots (saves re-typing each time we save a plot)
 plotsf <- "plots"
 # Use the checkFolder functon to see if the plots folder exists, if not create it so we can save the plots
 checkFolder(plotsf)  
@@ -30,14 +30,14 @@ rm(list=ls())
 # create a useful separator
 sep <- "\n################\n"
 
-# Check working directory is:"
+# Check working directory is:
 getwd()
 
 # print the separator
 cat(sep)
 
-# Testing Normal with a mean of 150 and standard deviation of 20 ----
-normTest <- rnorm(1000, mean = 150, sd = 40)
+# Testing Normal with a mean of m and standard deviation of s ----
+normTest <- rnorm(1000, mean = 500, sd = 100)
 summary(normTest)
 hist(normTest)
 dev.copy(png,"plots/normTestHist.png")
@@ -118,9 +118,9 @@ abline(v = c(-1.96,1.96), col="red")
 # add text labels
 text(-1.96,100, "-1.96", col="red")
 text(1.96,100, "1.96", col="red")
-text(-1.96, 150, pos = "4", "<----------", col = "red")
-text(1.96, 150, pos = "2", "---------->", col = "red")
-text(0, 150, "95%", col = "red")
+text(-1.96, 180, pos = "4", "<----------", col = "red")
+text(1.96, 180, pos = "2", "---------->", col = "red")
+text(0, 180, "95% of the distribution is here", col = "red", pos = 3) # how to make background a different colour?
 # save it
 dev.copy(png,"plots/stNormTestHist.png")
 dev.off()
@@ -130,12 +130,14 @@ cat(sep)
 m <- mean(normTest)
 s <- sd(normTest)
 n <- length(normTest)
-error <- qnorm(0.975)*s/sqrt(n)
+se <- s/sqrt(n)
+
+error <- qnorm(0.975)*se
 
 normTestCIu <- m + error
 normTestCIl <- m - error
 
-hist(normTest)
+hist(normTest, sub = "Red line = mean, green lines = 95% CI of the mean - not central 95% of the distribution")
 # add the mean
 abline(v = m, col="red")
 # add lower & upper 95% lines
@@ -150,6 +152,6 @@ print(paste0("normTest mean: ", round(m, digits = 2)))
 print(paste0("normTest lower 95% CI: ", round(normTestCIu, digits = 2)))
 
 # now go back to the top and change the value of 1000 to 10,000 in:
-# normTest <- rnorm(1000, mean = 150, sd = 40)
+# normTest <- rnorm(1000, mean = 500, sd = 100)
 # then re-run the whole script - what do you notice about the new 95% CIs?
 
