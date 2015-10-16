@@ -36,7 +36,7 @@ getwd()
 # print the separator
 cat(sep)
 
-# Testing Normal with a mean of m and standard deviation of s ----
+# Testing Normal with a mean of 500 and standard deviation of 100 ----
 normTest <- rnorm(1000, mean = 500, sd = 100)
 summary(normTest)
 hist(normTest)
