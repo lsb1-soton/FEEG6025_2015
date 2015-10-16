@@ -1,7 +1,7 @@
 # Meta ----
 # Script to load & process simple survey dataset
 # Survey admin: https://www.isurvey.soton.ac.uk/admin/section_list.php?surveyID=17669
-# Survey: https://www.isurvey.soton.ac.uk/17669 (initial background)
+# Survey: https://www.isurvey.soton.ac.uk/17669
 
 # code by: b.anderson@soton.ak.uk (@dataknut) with help from lsb1@soton.ac.uk
 
@@ -11,27 +11,23 @@
 rm(list=ls())
 
 # where is the default working directory?
-# use the results of this command to see how to do the next step
 getwd()
 
 # set location of data
-# dpath <- "where you put the data"
-# change the folder path below to one that matches your system and tells R where
-# you put the data
-dpath <- "~/OneDriveBusiness/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Data"
+# you will need to change this to whever you put the data (.csv fiule) you just downloaded
+# use the results of getwd() above to see the format to use for the PC you are using
+dpath <- "~/UoS One Drive/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Data"
 
-# set location of results (if any)
-# rpath <- "where you want results too go (if there are any)"
-rpath <- "~/OneDriveBusiness/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Week 3"
+# change the working directory/foilder so R can find the data easily
+setwd(dpath)
 
 # input file name
-# this is the one you downloaded - make sure the name is correct (without the '.csv')!
+# make sure this is the name of the data file (without the .csv suffix)
 file <- "SurveyID17669_23_30_initial_wf"
 
 ### Functions ----
 
-### Luke's finish time conversion ----
-# you can 'hide' this code by clicking on the arrow to the left (next to the line number) if you like
+### Luke's finish time conversion
 convertiSurveyFinishTime <- function(iSurveyFinishTime) {
   # lapply applies function(x) to every list item; this deals with character(0) results etc.
   as.POSIXct(unlist(lapply(iSurveyFinishTime,
@@ -56,14 +52,9 @@ convertiSurveyFinishTime <- function(iSurveyFinishTime) {
 
 ### Load & examine data  ------------------------
 
-# set working folder to 'dpath'
-setwd(dpath)
-
-# load the data into a data frame
+# load the data into a data frame using the 'file' variable you set above
+# note that we add the '.csv' part here for reasons that will become clear when we start using other data types
 classSurveyDF <- read.csv(paste0(file, ".csv"))
-
-# change the working directory once loaded in case we want to save out any results
-setwd(rpath)
 
 # variables?
 names(classSurveyDF)
@@ -80,8 +71,8 @@ table(classSurveyDF$Date.Finished)
 table(classSurveyDF$Total.Time.Taken)
 # very badly!
 
-### Clean and process  ------------------------
-# again, you can hide this code in RStudio by clicking on the arrow next to the line number on the left
+### Clean and process the data ------------------------
+
 # these variable names are a bit of a pain
 # create a new data frame with cleaned up names
 cleanClassSurvey <- data.frame(classSurveyDF$Participant.ID)
@@ -139,13 +130,19 @@ cleanClassSurvey$feedback <- as.factor(cleanClassSurvey$feedback)
 # check variable names
 names(cleanClassSurvey)
 
-### Analyse cleanClassSurvey ------------------------
+# remove the 'old' dataset to avoid confusion
+classSurveyDF <- NULL
 
-# Try to work through these questions using what you learnt from swirl on Tuesday
-# Use the Help tab in Rstudio to look for functions you vaguely remember and also for options
-# or you can type `?something' at the > prompt and R will show you help files
-# or try googling 'r help something'
-# In the hints the 'x' (or 'y') is just an example - you need to supply the correct variable names!
+### Analyse cleanClassSurvey ------------------------
+# Once you have got the code to work to here you should find that R Studio has a new 'clean'
+# dataset called cleanClassSurvey
+
+# Work through the following questions using this dataset and the commands you used in swirl on Tuesday
+# For help in R type ?something at the > prompt and R will load the help page. e.g.
+# > ?plot will open the help page on plot()
+# you might find the pdfs in the "R Resources" folder on blackboard useful
+# you might also find http://www.statmethods.net/index.html useful
+# or try googling "R how to something"
 
 ## Lab Q1: How many enjoyed their previous degree? ----
 # Hint: use plot(x) and add labels to the x and y axes using xlab = "" and ylab = ""

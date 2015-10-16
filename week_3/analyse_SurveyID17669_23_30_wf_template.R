@@ -137,7 +137,7 @@ classSurveyDF <- NULL
 # Once you have got the code to work to here you should find that R Studio has a new 'clean'
 # dataset called cleanClassSurvey
 
-# Work through the following questions using this dataset
+# Work through the following questions using this dataset and the commands you used in swirl on Tuesday
 # For help in R type ?something at the > prompt and R will load the help page. e.g.
 # > ?plot will open the help page on plot()
 # you might find the pdfs in the "R Resources" folder on blackboard useful
