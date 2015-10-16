@@ -178,14 +178,14 @@ barplot(table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe),
 # We could use a table() and then a barplot but let's try something else
 # Hint: use mosaicplot(x ~ y) with some fancy colours (you will need 5!) (why will you need 5?)
 # the following form may not work in old versions of R
-# mosaicplot(previous_safe ~ stats, 
-#           data = "cleanClassSurvey",
-#           main = "Previous reported stats experience by course type",
-#           xlab = "Previous course",
-#           ylab = "Stats experience",
-#           color = c("tan1", "tan2", "sienna1", "brown1", "firebrick1"))
+mosaicplot(previous_safe ~ stats, 
+           data = "cleanClassSurvey",
+           main = "Previous reported stats experience by course type",
+           xlab = "Previous course",
+           ylab = "Stats experience",
+           color = c("tan1", "tan2", "sienna1", "brown1", "firebrick1"))
 
-# try this instead:
+# if so try this instead (it specifies the variables in a different way):
 mosaicplot(cleanClassSurvey$previous_safe ~ cleanClassSurvey$stats, 
            main = "Previous reported stats experience by course type",
            xlab = "Previous course",
