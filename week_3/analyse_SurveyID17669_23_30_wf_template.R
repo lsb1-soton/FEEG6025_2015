@@ -198,17 +198,34 @@ print("You were supposed to stop before here!")
 ## Confidence Intervals ----
 
 # calculating a 95% CI for duration
+# first calculate the mean, checking for NA (as some people did not finish)
 m <- mean(cleanClassSurvey$duration_secs, na.rm = TRUE)
+# now calculate the standard deviation
 s <- sd(cleanClassSurvey$duration_secs, na.rm = TRUE)
-n <- length(cleanClassSurvey$duration_secs[cleanClassSurvey$finished == "Finished"]) # what would happen if we didn't exclude the NAs?
+# count how many valid cases there are
+n <- length(cleanClassSurvey$duration_secs[!is.na(cleanClassSurvey$finished)]) 
+# what would happen if we didn't exclude the NAs?
+
+# calculate the error using the formula and R's qnorm function to give us a precise answer
 error <- qnorm(0.975)*(s/sqrt(n))
 
+# calculate the upper and lower 95% CI
 duration_secsCIu <- m + error
 duration_secsCIl <- m - error
 
+# tell the user the answers
 print(paste0("Duration (secs) lower 95% CI: ", duration_secsCIl))
 print(paste0("Duration (secs) mean: ", m))
 print(paste0("Duration (secs) upper 95% CI: ", duration_secsCIu))
+
+# now redraw the old boxplot for duration and draw on the 95% CIs
+boxplot(cleanClassSurvey$duration_secs, main = "Box plot of duration")
+abline(h = m, col = "red") # the mean
+text(1, m , "Mean", col = "red") # add label
+abline(h=duration_secsCIu, col = "blue") # the upper 95% CI
+text(1, duration_secsCIu , "Upper 95%", col = "blue") # add label
+abline(h=duration_secsCIl, col = "green") # the lower 95% CI
+text(1, duration_secsCIl , "Lower 95%", col = "green") # add label
 
 ## Calculating 95% CI for % Civil Engineers
 non_e <- length(cleanClassSurvey$previous_safe[cleanClassSurvey$previous_safe == "Civil Engineer" 
@@ -228,6 +245,7 @@ print(paste0("non_eCIl lower 95% CI: ", non_eCIu))
 
 
 # just for fun - use a t test to compare duration for yes/no feedback
+# this uses the 95% CI of the t distribution in it's calculations to compare the means
 t.test(cleanClassSurvey$duration_secs ~ cleanClassSurvey$feedback)
 
 
