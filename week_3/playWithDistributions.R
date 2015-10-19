@@ -39,6 +39,7 @@ cat(sep)
 # Testing Normal with a mean of 500 and standard deviation of 100 ----
 normTest <- rnorm(1000, mean = 500, sd = 100)
 summary(normTest)
+# if you want to force the x axis to have a specific range a - b, use the option xlim = c(a,b)
 hist(normTest)
 dev.copy(png,"plots/normTestHist.png")
 dev.off()
