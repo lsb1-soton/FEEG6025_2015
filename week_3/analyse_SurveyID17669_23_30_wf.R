@@ -18,7 +18,7 @@ getwd()
 # use the results of getwd() above to see the format to use for the PC you are using
 dpath <- "~/UoS One Drive/PG/Southampton/FEEG6025 Data Analysis & Experimental Methods for Engineers/Data"
 
-# change the working directory/foilder so R can find the data easily
+# change the working directory/folder so R can find the data easily
 setwd(dpath)
 
 # input file name
@@ -236,6 +236,9 @@ boxplot(duration_secs ~ feedback,
         ylab = "Duration (s)")
 # what would you conclude from the boxplot?
 
+# just for fun - use a t test to compare duration for yes/no feedback
+t.test(cleanClassSurvey$duration_secs ~ cleanClassSurvey$feedback)
+
 ## Lab Q4: Do older students spend longer completing surveys? ----
 # Hint: use boxplot(x ~ y) to compare duration across age, 
 # You could also add a label to the x & y axes
@@ -271,46 +274,62 @@ corrgram(cleanClassSurvey[,cvars], order=TRUE, lower.panel=panel.pts,
 # STOP HERE!
 print("XXXXXXXXXXX")
 print("You were supposed to stop before here!")
+
 ## Confidence Intervals ----
 
-# calculating a 95% CI for duration
+# Calculating a 95% CI for mean duration
+# first calculate the mean, checking for NA (as some people did not finish)
 m <- mean(cleanClassSurvey$duration_secs, na.rm = TRUE)
+# now calculate the standard deviation
 s <- sd(cleanClassSurvey$duration_secs, na.rm = TRUE)
-n <- length(cleanClassSurvey$duration_secs[cleanClassSurvey$finished == "Finished"]) # what would happen if we didn't exclude the NAs?
+# count how many valid cases using length() there are making sure we exclude NAs
+n <- length(cleanClassSurvey$duration_secs[!is.na(cleanClassSurvey$finished)]) 
+# what would happen if we didn't exclude the NAs?
+
+# calculate the 95% error using the formula and R's qnorm function to give us a precise answer
+# remember qnorm(0.975) ~= 1.96 
 error <- qnorm(0.975)*(s/sqrt(n))
 
+# calculate the upper and lower 95% CI by adding/subtracting the error to/from the mean
 duration_secsCIu <- m + error
 duration_secsCIl <- m - error
 
+# tell the user the answers
 print(paste0("Duration (secs) lower 95% CI: ", duration_secsCIl))
 print(paste0("Duration (secs) mean: ", m))
 print(paste0("Duration (secs) upper 95% CI: ", duration_secsCIu))
 
-# now redraw the old boxplot for duration
+# now redraw the old boxplot for duration and draw on the 95% CIs
 boxplot(cleanClassSurvey$duration_secs, main = "Box plot of duration")
-abline(h = m, col = "red") # the mean
-#text(x, m , "Mean", col = "red") # I want to label the lines but what is the x value?
-abline(h=duration_secsCIu, col = "blue") # the upper 95% CI
-#text(x, m , "Upper 95%", col = "blue") # I want to label the lines but what is the x value?
-abline(h=duration_secsCIl, col = "green") # the lower 95% CI
-#text(x, m , "Lower 95%", col = "green") # I want to label the lines but what is the x value?
+abline(h = m, col = "red") # draw the mean
+text(1, m , "Mean", col = "red") # add label
+abline(h=duration_secsCIu, col = "blue") # draw the upper 95% CI
+text(1, duration_secsCIu , "Upper 95%", col = "blue") # add label
+abline(h=duration_secsCIl, col = "green") # draw the lower 95% CI
+text(1, duration_secsCIl , "Lower 95%", col = "green") # add label
 
 ## Calculating 95% CI for % Civil Engineers
-non_e <- length(cleanClassSurvey$previous_safe[cleanClassSurvey$previous_safe == "Civil Engineer" 
-                                               & !is.na(cleanClassSurvey$previous_safe)]) # make sure ignore NA
-valid <-  length(cleanClassSurvey$previous_safe[!is.na(cleanClassSurvey$previous_safe)]) # count the valid cases
+# how many civil engineers are there?
+# use length() to calculate the 'length' of the column (vector) after
+# we've selected the Civil Engineers
+n_civil <- length(cleanClassSurvey$previous_safe[
+  cleanClassSurvey$previous_safe == "Civil Engineer" 
+  & !is.na(cleanClassSurvey$previous_safe)]) # make sure ignore NA
+# how many valid cases are there?
+n_valid <-  length(cleanClassSurvey$previous_safe[
+  !is.na(cleanClassSurvey$previous_safe)]) # make sure ignore NA
 
-p <- non_e/valid
+# what proportion of validcases are engineers?
+p <- n_civil/n_valid
 
-error <- qnorm(0.975) * sqrt((p*(1-p))/valid)
+# calculate the 95% error using the formula and R's qnorm function
+error <- qnorm(0.975) * sqrt((p*(1-p))/n_valid)
 
+# calculate the 95% CI
 non_eCIu <- p + error
 non_eCIl <- p - error
 
+# tell the use the answer
 print(paste0("non_eCIu lower 95% CI: ", non_eCIl))
 print(paste0("non_e proportion: ", p))
 print(paste0("non_eCIl lower 95% CI: ", non_eCIu))
-
-
-# just for fun - use a t test to compare duration for yes/no feedback
-t.test(cleanClassSurvey$duration_secs ~ cleanClassSurvey$feedback)
