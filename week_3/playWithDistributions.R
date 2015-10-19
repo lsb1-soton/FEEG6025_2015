@@ -147,9 +147,10 @@ abline(v = c(normTestCIl,normTestCIu), col="green")
 dev.copy(png,"plots/NormTestHistCI.png")
 dev.off()
 
-print(paste0("normTest lower 95% CI: ", round(normTestCIl, digits = 2)))
-print(paste0("normTest mean: ", round(m, digits = 2)))
-print(paste0("normTest lower 95% CI: ", round(normTestCIu, digits = 2)))
+# tell the user the answer rounding the answer to 3 decimal places
+print(paste0("normTest upper 95% CI: ", round(normTestCIu, 3)))
+print(paste0("normTest mean: ", round(m, 3)))
+print(paste0("normTest lower 95% CI: ", round(normTestCIl, 3)))
 
 # now go back to the top and change the value of 1000 to 10,000 in:
 # normTest <- rnorm(1000, mean = 500, sd = 100)

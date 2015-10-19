@@ -253,9 +253,9 @@ error <- qnorm(0.975) * sqrt((p*(1-p))/n_valid)
 non_eCIu <- p + error
 non_eCIl <- p - error
 
-# tell the user the answer
-print(paste0("non_eCIu lower 95% CI: ", non_eCIl))
-print(paste0("non_e proportion: ", p))
-print(paste0("non_eCIl lower 95% CI: ", non_eCIu))
+# tell the user the answer rounding the answer to 3 decimal places
+print(paste0("upper 95% CI: ", round(non_eCIu,3)))
+print(paste0("non_e proportion: ", round(non_eCIu,3)))
+print(paste0("lower 95% CI: ", round(non_eCIl,3)))
 
 
