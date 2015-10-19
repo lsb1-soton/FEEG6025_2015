@@ -198,7 +198,10 @@ mosaicplot(cleanClassSurvey$previous_safe ~ cleanClassSurvey$stats,
            ylab = "Stats experience",
            color = c("tan1", "tan2", "sienna1", "brown1", "firebrick1"))
 
-# to select colors you might want to use try:
+# mosaicplot doesn't allow legends. If you want a legend use the vcd package's mosiac command 
+# (see http://www.statmethods.net/advgraphs/mosaic.html)
+
+# to see which colors you could use you might want to use try:
 # demo(colors) - it will step through a large number of examples!
 
 ## Lab Q3: Did the respondents who gave feedback spend longer on the survey? ----
