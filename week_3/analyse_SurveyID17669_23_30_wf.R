@@ -209,6 +209,17 @@ tapply(cleanClassSurvey$duration_secs, cleanClassSurvey$feedback, na.rm = TRUE, 
 # what would have happened if we had not told R to ignore the NA?
 # what would you conclude from the result?
 
+# if you want to compare the quartiles etc (as boxplot will do):
+summary(cleanClassSurvey$duration_secs[
+  !is.na(cleanClassSurvey$duration_secs) & 
+    cleanClassSurvey$feedback == "Feedback"]) # where feedback given, checking for NA
+summary(cleanClassSurvey$duration_secs[
+  !is.na(cleanClassSurvey$duration_secs) & 
+    cleanClassSurvey$feedback == "No feedback"]) # where no feedback given, checking for NA
+
+# or much cleaner (but doesn't give the mean):
+tapply(cleanClassSurvey$duration_secs, cleanClassSurvey$feedback, na.rm = TRUE, quantile)
+
 # make a boxplot to compare duration by feedback/no feedback
 # Hint: use boxplot(x ~ y)
 boxplot(duration_secs ~ feedback,
