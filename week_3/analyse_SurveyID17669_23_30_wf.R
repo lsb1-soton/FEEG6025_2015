@@ -156,15 +156,21 @@ table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe)
 
 # turn that into a bar chart
 # Hint: use table(x,y) and put the results into a variable
-counts <- table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe)
+# you can give the variable any name you like. Originally I used 'count' but just to be clear
+# I will change this to something more meaningful and then will have to edit the barplot code too
+tableEnjoyPrevious <- table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe)
 
 # Hint: now make the barplot(x) and use the 'beside' option to put the bars next to each other
 # try adding a legend too
-barplot(counts, 
+# change 'counts' to 'tableEnjoyPrevious' (see above)
+barplot(tableEnjoyPrevious, 
         main="Previous course enjoyment by course type",
         xlab = "Course type",
         ylab = "N",
-        legend = rownames(counts), beside=TRUE )
+        legend = rownames(tableEnjoyPrevious), beside=TRUE )
+# try running that afgain without the 'beside = TRUE' and see what happens - you should get a stacked bar chart instead
+# with the bars on top of each other. Usually you would want to do this with % not counts so you'd have to create a different
+# table first
 
 # of course you could have put the table() function inside the barplot function :-)
 # like this:
@@ -172,7 +178,7 @@ barplot(table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe),
         main="Previous course enjoyment by course type",
         xlab = "Course type",
         ylab = "N",
-        legend = rownames(counts), beside=TRUE )
+        legend = rownames(table(cleanClassSurvey$enjoy, cleanClassSurvey$previous_safe)), beside=TRUE )
 
 ## Lab Q2:  Who knows stats by previous course type? ----
 # We could use a table() and then a barplot but let's try something else
