@@ -329,7 +329,7 @@ error <- qnorm(0.975) * sqrt((p*(1-p))/n_valid)
 non_eCIu <- p + error
 non_eCIl <- p - error
 
-# tell the use the answer
+# tell the user the answer
 print(paste0("non_eCIu lower 95% CI: ", non_eCIl))
 print(paste0("non_e proportion: ", p))
 print(paste0("non_eCIl lower 95% CI: ", non_eCIu))
