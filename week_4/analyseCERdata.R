@@ -33,17 +33,21 @@ summary(residentialCER$kwh)
 # Time series analysis ----
 # create a subset for the first household only
 hh_1024 <- subset(residentialCER, residentialCER$ID == 1024)
+# set a flag so we can select Oct only
 hh_1024$oct[grep("oct",hh_1024$s_datetime)] <- 1
 
-# select just October
+# select just October - you'll see why in a minute
 hh_1024oct <- subset(hh_1024, hh_1024$oct == 1)
 
 # need to check is sorted by datetime!
 hh_1024oct_sorted <- hh_1024oct[order(hh_1024oct$s_datetime),] # only works if we remove the sept days!
 
 plot(hh_1024oct_sorted$kwh)
+
 # run acf with the first household only up to just over 48 hours (96 half hours)
 acf(hh_1024oct_sorted$kwh, lag.max = 100)
+# what do we conclude from that?
+# what might happen if we excluded sleep time (00:00 - 06:00?)
 
 # what kind of household is this?
 table(hh_1024oct_sorted$ba_nadults)
