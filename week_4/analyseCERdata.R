@@ -16,7 +16,7 @@ getwd()
 setwd("~/Documents/Work/Data/CER Smart Metering Project/data/processed")
 
 # Load data & describe it ----
-# load the data - this may take some time
+# load the data - this may take some time even though it's only 10% of the actual October 2009 data
 # it's a csv file (I hope you unzipped it first!)
 residentialCER <- as.data.frame(
   read.csv("CER-halfhour-electricity-Census2022-Oct-2009-sample_res_10pc_v1.csv"))
