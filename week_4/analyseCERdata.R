@@ -16,10 +16,13 @@ getwd()
 setwd("~/Documents/Work/Data/CER Smart Metering Project/data/processed")
 
 # Load data & describe it ----
-# load the data - this may take some time even though it's only 10% of the actual October 2009 data
-# it's a csv file (I hope you unzipped it first!)
+# Load the data
+# This may take some time - it's about 0.5 million observations
+# even though it's only 10% of the actual October 2009 data.
+# It's a csv file (I hope you unzipped it first!)
+# Perhaps we should load it as a data table...?
 residentialCER <- as.data.frame(
-  read.csv("CER-halfhour-electricity-Census2022-Oct-2009-sample_res_10pc_v1.csv"))
+  read.csv("CER-halfhour-electricity-Census2022-Oct-2009-sample_res_10pc_wf_v1.csv"))
 
 # what's here?
 names(residentialCER)
@@ -30,9 +33,20 @@ dim(residentialCER)
 # mean electricity consumption
 summary(residentialCER$kwh)
 
+# Plots - convert to data table first ----
+# data table functions are quicker (could have created data table to start with...)
+library(data.table)
+residentialCER_DT <- as.data.table(residentialCER)
+halfHourly <- residentialCER_DT[,mean(kwh),by=s_halfhour] # mean per half hour for all of October
+plot(halfHourly) # familiar daily profile?
+
+# now do by date and half hour
+halfHourly_date <- residentialCER_DT[,mean(kwh),by=s_datetime]
+plot(halfHourly_date)
+
 # Time series analysis ----
 # create a subset for the first household only
-hh_1024 <- subset(residentialCER, residentialCER$ID == 1024)
+hh_1024 <- subset(residentialCER, residentialCER$ID == 1005)
 # set a flag so we can select Oct only
 hh_1024$oct[grep("oct",hh_1024$s_datetime)] <- 1
 
@@ -58,3 +72,4 @@ table(hh_1024oct_sorted$ba_nchildren)
 
 table(hh_1024oct_sorted$ba_empl)
 # in work
+
