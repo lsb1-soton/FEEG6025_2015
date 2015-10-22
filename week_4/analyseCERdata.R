@@ -3,6 +3,8 @@
 # code by: b.anderson@soton.ak.uk (@dataknut)
 
 # Housekeeping ----
+# clear the workspace
+rm(list=ls())
 
 # install a couple of packages that we will need
 # if you have them already, you can comment out these lines with a "#"
@@ -10,9 +12,6 @@ install.packages("data.table")
 library(data.table)
 install.packages("zoo")
 library(zoo)
-
-# clear the workspace
-rm(list=ls())
 
 # Working directory is:
 getwd()
@@ -71,11 +70,14 @@ hh_1024oct <- hh_1024[hh_1024$l_datetime %in% date_start:date_end, ]
 ##hh_1024oct_sorted <- hh_1024oct[order(hh_1024oct$s_datetime),] # only works if we remove the sept days!
 
 # create zoo (time series) object
-hh_1024oct_z=zoo(hh_1024oct)
+hh_1024oct_z=zoo(hh_1024oct,order.by=hh_1024oct$l_datetime)
 
 # is it a regular time series? (using zoo function)
 is.regular(hh_1024oct_z)
+# if it wasn't, how could we get round this problem?
+# hint: look at na.approx() and approx()
 
+# plot data
 plot(hh_1024oct$kwh)
 
 # run acf with the first household only up to just over 48 hours (96 half hours)
@@ -87,13 +89,13 @@ acf(hh_1024oct$kwh, lag.max = 100)
 # It shows more clearly how the random variation depends on the previous lags
 # see https://www.youtube.com/watch?v=R-oWTWdS1Jg
 pacf(hh_1024oct$kwh, lag.max = 100)
-# how many lags are significant?
+# how many lags are significant in this case?
 
 # what might happen if we excluded sleep time (00:00 - 06:00?)
 # hint: 
 # hh_1024oct$my_hod<-(as.double(hh_1024oct$l_datetime)%%86400)/3600
 # ...gives decimal hour of day
-# then can use indexing to remove this data:
+# then can use logical indexing to remove this data:
 #(hh_1024oct$my_hod>0) & (hh_1024oct$my_hod<=6)
 
 # what kind of household is this?
