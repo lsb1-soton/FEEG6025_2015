@@ -96,7 +96,9 @@ pacf(hh_1024oct$kwh, lag.max = 100)
 # hh_1024oct$my_hod<-(as.double(hh_1024oct$l_datetime)%%86400)/3600
 # ...gives decimal hour of day
 # then can use logical indexing to remove this data:
-#(hh_1024oct$my_hod>0) & (hh_1024oct$my_hod<=6)
+# (hh_1024oct$my_hod>6)
+
+# Should we also filter out weekdays from weekends? Why?
 
 # what kind of household is this?
 table(hh_1024oct$ba_nadults)
