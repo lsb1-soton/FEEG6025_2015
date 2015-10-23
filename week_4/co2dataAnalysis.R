@@ -14,10 +14,22 @@ co2data <- read.csv("http://www.southampton.ac.uk/~lsb1/data/latestTRHweb.csv")
 # have a look at the first few rows of data
 head(co2data)
 
+# L: we need to convert the timestamp into something that R can work with
+# (currently R thinks that it is just a collection of bits of text)
+# store the R time in a new field of the data frame
+# "%a %b %d %X %Y" is a time format string - type ?strptime for details
+# In this case:
+# %a - day of the week in text
+# %b - month of year in text
+# %d - day of month as number
+# %X - HH:MM:SS
+# %Y - year as a number
+co2data$RTime<-as.POSIXct(as.character(co2data$localTime),tz="","%a %b %d %X %Y")
+
 # plot temp
-plot(co2data$temp_degC, type="l", col=1)
+plot(co2data$RTime,co2data$temp_degC, type="l", col=1)
 # now add the relative humidity to the same plot
-lines(co2data$relHumid_pc, type="l", col=2)
+lines(co2data$RTime,co2data$relHumid_pc, type="l", col=2)
 # what happened to the second line?
 
 # if we check the range for each variable we will see that...
@@ -25,13 +37,13 @@ summary(co2data)
 #... they don't overlap, so the second line is off the top of the plot
 
 # fix this by setting an appropriate ylim to include all the data
-plot(co2data$temp_degC, type="l", col=1, 
+plot(co2data$RTime,co2data$temp_degC, type="l", col=1, 
      ylim = c(20,70),
-     xlab="Time [s]", 
+     xlab="Date/time", 
      ylab="Rate")
      
 # now add the relative humidity to the same plot
-lines(co2data$relHumid_pc, type="l", col=2,
+lines(co2data$RTime,co2data$relHumid_pc, type="l", col=2,
       xaxt="n",
       yaxt="n",xlab="",ylab="")
 
