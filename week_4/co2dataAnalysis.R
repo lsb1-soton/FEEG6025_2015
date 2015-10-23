@@ -1,3 +1,4 @@
+##################################
 # CO2 and humidty analysis
 # Purpose:
 # to introduce loading data remotely
@@ -7,6 +8,8 @@
 # http://www.southampton.ac.uk/~lsb1/data/latestTRHweb.csv
 # we can load it in to R without downloading it seperately like this:
 
+##################################
+# Load it & examine ----
 co2data <- read.csv("http://www.southampton.ac.uk/~lsb1/data/latestTRHweb.csv")
 
 # that's it!
@@ -14,6 +17,8 @@ co2data <- read.csv("http://www.southampton.ac.uk/~lsb1/data/latestTRHweb.csv")
 # have a look at the first few rows of data
 head(co2data)
 
+##################################
+# Convert to useful time ----
 # L: we need to convert the timestamp into something that R can work with
 # (currently R thinks that it is just a collection of bits of text)
 # store the R time in a new field of the data frame
@@ -26,6 +31,8 @@ head(co2data)
 # %Y - year as a number
 co2data$RTime<-as.POSIXct(as.character(co2data$localTime),tz="","%a %b %d %X %Y")
 
+##################################
+# Plots !! ----
 # plot temp
 plot(co2data$RTime,co2data$temp_degC, type="l", col=1)
 # now add the relative humidity to the same plot
@@ -53,6 +60,7 @@ lines(co2data$RTime,co2data$relHumid_pc, type="l", col=2,
 legend("topleft",col=c(1:2),lty=1,
        legend=c("CO2 level","Relative Humidity"))
 
+##################################
 # Homework :-) ----
 # Plot one of the lines on a different y axis scale on the same plot to enable better comparison
 # Try smoothing the relative humidity using the filter() function to see if you
