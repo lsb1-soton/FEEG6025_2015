@@ -37,6 +37,8 @@ summary(co2data)
 #... they don't overlap, so the second line is off the top of the plot
 
 # fix this by setting an appropriate ylim to include all the data
+# you could be really clever here and work out which is the lowest/highest value for each
+# variable 'on the fly' but we'll just use the results of summary()!
 plot(co2data$RTime,co2data$temp_degC, type="l", col=1, 
      ylim = c(20,70),
      xlab="Date/time", 
