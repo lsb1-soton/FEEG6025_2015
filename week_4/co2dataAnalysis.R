@@ -1,12 +1,12 @@
 ##################################
-# CO2 and humidty analysis
+# CO2 and humidity analysis
 # Purpose:
 # to introduce loading data remotely
 # to plot data
 
 # Luke's sensor data is at:
 # http://www.southampton.ac.uk/~lsb1/data/latestTRHweb.csv
-# we can load it in to R without downloading it seperately like this:
+# we can load it in to R without downloading it separately like this:
 
 ##################################
 # Load it & examine ----
@@ -19,8 +19,7 @@ head(co2data)
 
 ##################################
 # Convert to useful time ----
-# L: we need to convert the timestamps e.g. "Tue Oct 20 17:04:18 2015"
-# into something that R can work with.
+# L: we need to convert the timestamp into something that R can work with
 # (currently R thinks that it is just a collection of bits of text)
 # store the R time in a new field of the data frame
 # "%a %b %d %X %Y" is a time format string - type ?strptime for details
@@ -58,8 +57,7 @@ lines(co2data$RTime,co2data$relHumid_pc, type="l", col=2,
       yaxt="n",xlab="",ylab="")
 
 # add legend
-legend("topleft",col=c(1:2),lty=1,
-       legend=c("CO2 level","Relative Humidity"))
+legend("topleft",col=c(1:2),lty=1,legend=c("Temperature (degC)","Relative Humidity (%)"))
 
 ##################################
 # Homework :-) ----
