@@ -19,7 +19,8 @@ head(co2data)
 
 ##################################
 # Convert to useful time ----
-# L: we need to convert the timestamp into something that R can work with
+# L: we need to convert the timestamps e.g. "Tue Oct 20 17:04:18 2015"
+# into something that R can work with.
 # (currently R thinks that it is just a collection of bits of text)
 # store the R time in a new field of the data frame
 # "%a %b %d %X %Y" is a time format string - type ?strptime for details
