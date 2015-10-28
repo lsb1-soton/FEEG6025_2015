@@ -58,7 +58,7 @@ lines(co2data$RTime,co2data$relHumid_pc, type="l", col=2,
 
 # add legend
 legend("topleft",col=c(1:2),lty=1,
-       legend=c("CO2 level","Relative Humidity"))
+       legend=c("Temperature (degC)","Relative Humidity (%)"))
 
 ##################################
 # Homework :-) ----
